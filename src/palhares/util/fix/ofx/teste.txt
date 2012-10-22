@@ -1,0 +1,5 @@
+sb.append("\t").append(OfxTags.TRN_dtposted_OPEN).append(this.dtposted).append(OfxTags.TRN_dtposted_CLOSE).append("\r\n");
+sb.append("\t").append(OfxTags.TRN_trnamt_OPEN).append(this.trnamt).append(OfxTags.TRN_trnamt_CLOSE).append("\r\n");
+sb.append("\t").append(OfxTags.TRN_fitid_OPEN).append(this.fitid).append(OfxTags.TRN_fitid_CLOSE).append("\r\n");
+sb.append("\t").append(OfxTags.TRN_checknum_OPEN).append(this.checknum).append(OfxTags.TRN_checknum_CLOSE).append("\r\n");
+sb.append("\t").append(OfxTags.TRN_memo_OPEN).append(this.memo).append(OfxTags.TRN_memo_CLOSE).append("\r\n");
