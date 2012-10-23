@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import palhares.util.common.StringTools;
 
@@ -43,7 +45,7 @@ public class OfxFacility extends JPanel {
     private JButton saveButton;
 
     private OfxParser ofxParser;
-    private Map<Stmttrn, JComboBox> itensMap = new LinkedHashMap<Stmttrn, JComboBox>();
+    private Map<Stmttrn, JComboBox<String>> itensMap = new LinkedHashMap<>();
     private File ofxSourceFile;
     String[] transactionNames;
 
@@ -52,6 +54,7 @@ public class OfxFacility extends JPanel {
 
         this.fileChooser = new JFileChooser();
         this.fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        this.fileChooser.setFileFilter(new FileNameExtensionFilter("Money OFX", "ofx"));
 
         this.panelMain.setLayout(new BoxLayout(this.panelMain, BoxLayout.Y_AXIS));
 
@@ -89,7 +92,9 @@ public class OfxFacility extends JPanel {
     }
 
     public void loadTransactionNames() throws IOException {
-        InputStream inputstream = this.getClass().getClassLoader().getResourceAsStream("name.cfg");
+        // InputStream inputstream = this.getClass().getClassLoader().getResourceAsStream("name.cfg");
+    	InputStream inputstream = new FileInputStream("name.cfg");
+    	
         BufferedReader bf = new BufferedReader(new InputStreamReader(inputstream));
         Set<String> names = new LinkedHashSet<String>();
         names.add("");
@@ -103,13 +108,13 @@ public class OfxFacility extends JPanel {
     }
 
     private void saveFile() {
-        for (Map.Entry<Stmttrn, JComboBox> entry : this.itensMap.entrySet()) {
+        for (Map.Entry<Stmttrn, JComboBox<String>> entry : this.itensMap.entrySet()) {
             Stmttrn stmt = entry.getKey();
             stmt.set(OfxTags.TRN_NAME, entry.getValue().getSelectedItem().toString());
         }
         String fileName = this.ofxSourceFile.getAbsolutePath();
         int dotIdx = fileName.lastIndexOf(".");
-        fileName = fileName.substring(0, dotIdx) + "_bac.ofx";
+        fileName = fileName.substring(0, dotIdx) + "_parsed.ofx";
         try {
             this.ofxParser.write(new FileWriter(fileName));
             JOptionPane.showMessageDialog(this, "Sucesso", "Arquivo grava com sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -124,55 +129,59 @@ public class OfxFacility extends JPanel {
     private void chooseFiles() {
         int returnVal = this.fileChooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            try {
-                Arrays.copyOfRange(this.transactionNames, 0, 1);
-                this.ofxSourceFile = this.fileChooser.getSelectedFile();
-                this.ofxParser = new OfxParser(new FileReader(this.ofxSourceFile));
-                this.panelMain.removeAll();
-                this.itensMap.clear();
-                for (Object o : this.ofxParser.getItens()) {
-                    if (o instanceof Stmttrn) {
-                        Stmttrn stmt = (Stmttrn) o;
-                        JPanel p = new JPanel(new GridLayout(1, 3));
-
-                        String[] names = Arrays.copyOf(this.transactionNames, this.transactionNames.length);
-                        names[0] = stmt.get(OfxTags.TRN_NAME);
-                        JComboBox jComboBox = new JComboBox(names);
-                        jComboBox.setEditable(true);
-                        jComboBox.setSelectedItem(stmt.get(OfxTags.TRN_NAME));
-                        
-                        JTextField dtposted = new JTextField(stmt.get(OfxTags.TRN_DTPOSTED));
-                        dtposted.setEnabled(false);
-                        p.add(dtposted);
-                        JTextField trnamt = new JTextField(stmt.get(OfxTags.TRN_TRNAMT));
-                        trnamt.setEnabled(false);
-                        p.add(trnamt);
-                        p.add(jComboBox);
-                        JTextField trnmemo = new JTextField(stmt.get(OfxTags.TRN_MEMO));
-                        trnmemo.setEnabled(false);
-                        p.add(trnmemo);
-                        p.setPreferredSize(new Dimension(750, 25));
-                        p.setMaximumSize(new Dimension(750, 25));
-                        this.panelMain.add(p);
-                        this.itensMap.put(stmt, jComboBox);
-                    }
-                }
-            
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao abrir arquivo", "Open File Erro", JOptionPane.ERROR_MESSAGE);
-                System.out.println(e);
-                e.printStackTrace();
-            }
+            Arrays.copyOfRange(this.transactionNames, 0, 1);
+            this.ofxSourceFile = this.fileChooser.getSelectedFile();
+            openFile();
         }
         this.validate();
     }
+
+	private void openFile() {
+		try {
+			this.ofxParser = new OfxParser(new FileReader(this.ofxSourceFile));
+			this.panelMain.removeAll();
+			this.itensMap.clear();
+			for (Object o : this.ofxParser.getItens()) {
+				if (o instanceof Stmttrn) {
+					Stmttrn stmt = (Stmttrn) o;
+					JPanel p = new JPanel(new GridLayout(1, 3));
+
+					String[] names = Arrays.copyOf(this.transactionNames, this.transactionNames.length);
+					names[0] = stmt.get(OfxTags.TRN_NAME);
+					JComboBox<String> jComboBox = new JComboBox<String>(names);
+					jComboBox.setEditable(true);
+					jComboBox.setSelectedItem(stmt.get(OfxTags.TRN_NAME));
+
+					JTextField dtposted = new JTextField(stmt.get(OfxTags.TRN_DTPOSTED));
+					dtposted.setEnabled(false);
+					p.add(dtposted);
+					JTextField trnamt = new JTextField(stmt.get(OfxTags.TRN_TRNAMT));
+					trnamt.setEnabled(false);
+					p.add(trnamt);
+					p.add(jComboBox);
+					JTextField trnmemo = new JTextField(stmt.get(OfxTags.TRN_MEMO));
+					trnmemo.setEnabled(false);
+					p.add(trnmemo);
+					p.setPreferredSize(new Dimension(750, 25));
+					p.setMaximumSize(new Dimension(750, 25));
+					this.panelMain.add(p);
+					this.itensMap.put(stmt, jComboBox);
+				}
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erro ao abrir arquivo", "Open File Erro", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e);
+			e.printStackTrace();
+		}
+
+	}
 
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    private static void createAndShowGUI(String[] files) {
         //Create and set up the window.
         JFrame frame = new JFrame("Regex Rename File");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -185,15 +194,19 @@ public class OfxFacility extends JPanel {
 
         //Display the window.
         frame.pack();
+        if (files.length == 1) {
+        	newContentPane.ofxSourceFile = new File(files[0]);
+        	newContentPane.openFile();
+        }
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI();
+                createAndShowGUI(args);
             }
         });
     }

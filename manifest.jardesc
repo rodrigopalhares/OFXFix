@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="D:/Appz/OFXFix/OFXFix.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/OFXFix/manifest.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" project1="OFXFix" refactoring1="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;session version=&quot;1.0&quot;&gt;&#13;&#10;&lt;refactoring comment=&quot;Move element &amp;apos;name.cfg&amp;apos; to &amp;apos;OFXFix&amp;apos;&amp;#x0D;&amp;#x0A;- Original project: &amp;apos;OFXFix&amp;apos;&amp;#x0D;&amp;#x0A;- Destination element: &amp;apos;OFXFix&amp;apos;&amp;#x0D;&amp;#x0A;- Original element: &amp;apos;name.cfg&amp;apos;&amp;#x0D;&amp;#x0A;- Update references to refactored element&quot; description=&quot;Move file&quot; destination=&quot;=OFXFix&quot; element1=&quot;src/name.cfg&quot; files=&quot;1&quot; flags=&quot;589830&quot; folders=&quot;0&quot; id=&quot;org.eclipse.jdt.ui.move&quot; policy=&quot;org.eclipse.jdt.ui.moveResources&quot; project=&quot;OFXFix&quot; qualified=&quot;false&quot; references=&quot;true&quot; stamp=&quot;1350949701647&quot; units=&quot;0&quot; version=&quot;1.0&quot;/&gt;&#13;&#10;&lt;/session&gt;" structuralOnly="false"/>
+    <selectedProjects>
+        <project name="OFXFix"/>
+    </selectedProjects>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=OFXFix/src&lt;palhares.util.fix.ofx{OfxFacility.java[OfxFacility" manifestLocation="/OFXFix/manifest" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <javaElement handleIdentifier="=OFXFix/src"/>
+        <file path="/OFXFix/.project"/>
+        <file path="/OFXFix/.gitignore"/>
+        <file path="/OFXFix/README.md"/>
+        <file path="/OFXFix/.classpath"/>
+        <file path="/OFXFix/name.cfg"/>
+    </selectedElements>
+</jardesc>
