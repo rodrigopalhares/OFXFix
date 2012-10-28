@@ -1,0 +1,23 @@
+if (stmt.name == 'SALDO ANTERIOR' 
+	|| stmt.name == 'RECURSOS EM C/C'
+	|| stmt.name == 'SALDO FINAL'
+	|| stmt.name == 'bx Aut Poupanca'
+	|| stmt.trnamt == 0) {
+	stmt.deleted = true
+}
+
+if (stmt.memo == 'REM BASICA'
+	|| stmt.memo == 'CRED JUROS') {
+	stmt.name = 'Juros'
+}
+
+if (stmt.fitid == null
+	|| stmt.fitid == ''
+	|| stmt.fitid == 0) {
+
+	java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
+	df.setMaximumIntegerDigits(4);
+	String date = stmt.dtposted.substring(0, 8);
+    String value = Math.abs(df.format((stmt.name + stmt.memo + stmt.dtposted + stmt.trnamt.toString()).hashCode()));
+	stmt.fitid = date + value
+}
