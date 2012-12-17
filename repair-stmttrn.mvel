@@ -1,14 +1,29 @@
-if (stmt.name == 'SALDO ANTERIOR' 
-	|| stmt.name == 'RECURSOS EM C/C'
-	|| stmt.name == 'SALDO FINAL'
-	|| stmt.name == 'bx Aut Poupanca'
-	|| stmt.trnamt == 0) {
+invalids = ['saldo anterior', 'recursos em c/c', 'saldo final', 'bx aut poupanca'];
+
+trnNames = [
+	'Juros': ['rem basica', 'cred juros'],
+	'Restaurante': ['visa electron mama farah', 'visa electron verde mar', 'visa electron sabor sutil', 'visa electron villa gaia ii ltda', 'visa electron cafe club', 'visa electron mosaico', 'visa electron assacabrasa', 'visa electron restaurante tia vanda'],
+	'cesta': ['tarifa bancaria cesta exclusive', 'pacote top 910120'],
+	'citicard protect': ['citicard protect 201270'],
+	'Transf Citicard': ['dac-cartao cred. 312333']
+];
+
+name = stmt.?name.toLowerCase();
+memo = stmt.?memo.toLowerCase();
+
+if (name != null && memo == null) {
+	memo = name;
+	name = null;
+}
+
+if (invalids.contains(memo) || stmt.trnamt == 0.0) {
 	stmt.deleted = true
 }
 
-if (stmt.memo == 'REM BASICA'
-	|| stmt.memo == 'CRED JUROS') {
-	stmt.name = 'Juros'
+names = ($.key in trnNames.entrySet() if $.value.contains(memo));
+
+if (!names.isEmpty()) {
+	name = names[0]
 }
 
 if (stmt.fitid == null
@@ -18,6 +33,9 @@ if (stmt.fitid == null
 	java.text.DecimalFormat df = new java.text.DecimalFormat("0000");
 	df.setMaximumIntegerDigits(4);
 	String date = stmt.dtposted.substring(0, 8);
-    String value = Math.abs(df.format((stmt.name + stmt.memo + stmt.dtposted + stmt.trnamt.toString()).hashCode()));
+    String value = Math.abs(df.format((name + memo + stmt.dtposted + stmt.trnamt.toString()).hashCode()));
 	stmt.fitid = date + value
 }
+
+stmt.memo = memo;
+stmt.name = name;

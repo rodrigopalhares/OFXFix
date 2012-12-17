@@ -148,7 +148,7 @@ public class Main extends JPanel {
 				trnamt.setEnabled(false);
 
 				JTextField trnmemo = new JTextField(stmt.getMemo());
-				trnmemo.setEnabled(false);
+				trnmemo.setEnabled(!stmt.getDeleted());
 
 				// Adiciona os itens na linha
 				JPanel p = new JPanel(new GridLayout(1, 3));

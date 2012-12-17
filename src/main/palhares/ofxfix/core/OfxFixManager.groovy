@@ -27,9 +27,16 @@ public class OfxFixManager {
 	File ofxFile;
 	
 	/** Expressão mvel compilada. */
-	static def compileExpression = null;
+	def compileExpression = null;
 	
 	static String[] transactionNames = null;
+
+	/**
+	 * Construtor.
+	 * @param ofxFile arquivo ofx
+	 */
+	public OfxFixManager() {
+	}
 	
 	/**
 	 * Construtor.
@@ -135,11 +142,15 @@ public class OfxFixManager {
 	 * Executa a expressão mvel no stmttrn para reparar o stmt.
 	 * @param stmt stmttrn a ser reparado
 	 */
-	static void repair(Stmttrn stmt) {
+	void repair(Stmttrn stmt) {
 		if (compileExpression == null) {
 			def repairFile = new File("repair-stmttrn.mvel");
 			compileExpression = MVEL.compileExpression(repairFile.getText());
 		}
+
+		// Por algum motivo sem esse sleep ocorre o erro na abertura de alguns arquivos. "org.mvel2.optimizers.OptimizationNotSupported"
+		Thread.sleep(1);
+
 		def vars = new CachedMapVariableResolverFactory(["stmt" : stmt]);
 		MVEL.executeExpression(compileExpression, vars)
 	}

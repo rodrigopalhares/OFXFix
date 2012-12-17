@@ -119,6 +119,6 @@ class RepairStmttrnTest extends GroovyTestCase {
 	 * Executa a expressão mvel no stmttrn base.
 	 */
 	private void executeExpression() {
-		OfxFixManager.repair(this.stmt);
+		new OfxFixManager().repair(this.stmt);
 	}
 }
