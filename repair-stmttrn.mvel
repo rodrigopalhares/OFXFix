@@ -2,7 +2,22 @@ invalids = ['saldo anterior', 'recursos em c/c', 'saldo final', 'bx aut poupanca
 
 trnNames = [
 	'Juros': ['rem basica', 'cred juros'],
-	'Restaurante': ['visa electron mama farah', 'visa electron verde mar', 'visa electron sabor sutil', 'visa electron villa gaia ii ltda', 'visa electron cafe club', 'visa electron mosaico', 'visa electron assacabrasa', 'visa electron restaurante tia vanda'],
+	'Restaurante': ['visa electron mama farah',
+			'visa electron verde mar',
+			'visa electron sabor sutil',
+			'visa electron villa gaia ii ltda',
+			'visa electron cafe club',
+			'visa electron mosaico',
+			'visa electron assacabrasa',
+			'visa electron restaurante tia vanda',
+			'visa electron subway',
+			'visa electron mixido',
+			'visa electron trigopane',
+			'visa electron salutti s. l. e natu',
+			'visa electron empadas',
+			'visa electron bar do polaco',
+			'visa electron santissimo pao',
+			'visa electron restaurante take'],
 	'cesta': ['tarifa bancaria cesta exclusive', 'pacote top 910120'],
 	'citicard protect': ['citicard protect 201270'],
 	'Transf Citicard': ['dac-cartao cred. 312333']

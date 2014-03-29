@@ -149,7 +149,7 @@ public class OfxFixManager {
 		}
 
 		// Por algum motivo sem esse sleep ocorre o erro na abertura de alguns arquivos. "org.mvel2.optimizers.OptimizationNotSupported"
-		Thread.sleep(1);
+		Thread.sleep(10);
 
 		def vars = new CachedMapVariableResolverFactory(["stmt" : stmt]);
 		MVEL.executeExpression(compileExpression, vars)

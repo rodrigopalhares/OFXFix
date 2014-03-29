@@ -96,12 +96,15 @@ public class Main extends JPanel {
      * Salva o novo arquivo reparado.
      */
     private void saveFile() {
-        for (Map.Entry<Stmttrn, JComboBox<String>> entry : this.itensMap.entrySet()) {
-            Stmttrn stmt = entry.getKey();
-            stmt.setName(entry.getValue().getSelectedItem().toString());
-        }
-
         try {
+            for (Map.Entry<Stmttrn, JComboBox<String>> entry : this.itensMap.entrySet()) {
+                Stmttrn stmt = entry.getKey();
+                Object selectedItem = entry.getValue().getSelectedItem();
+                if (selectedItem != null) {
+    				stmt.setName(selectedItem.toString());
+                }
+            }
+
             this.ofxFixManager.writeToFile();
             JOptionPane.showMessageDialog(this, "Sucesso", "Arquivo grava com sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
@@ -173,7 +176,7 @@ public class Main extends JPanel {
      * Cria e mostra a GUI. Se for passado 1 arquivo, ele é aberto.
      */
     private static void createAndShowGUI(String[] files) {
-        JFrame frame = new JFrame("Regex Rename File");
+        JFrame frame = new JFrame("OFXFix");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(790, 700));
 
